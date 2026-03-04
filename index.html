@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMI Invila™ - KIW Semarang</title>
+    <style>
+        :root {
+            /* Latar belakang & Panel: Dibuat lebih solid untuk kontras maksimal */
+            --bg-dark: #0b0e14; 
+            --panel-bg: #161b22; 
+            --border-color: #30363d;
+
+            /* Aksen & Branding: Warna elektrik yang menyala */
+            --accent-blue: #58a6ff; 
+            --kiw-purple: #4c35a6; 
+            --kiw-purple-light: #7c64d5;
+
+            /* Warna Teks: Putih murni agar sangat tajam di layar gelap */
+            --text-main: #ffffff;      
+            --text-secondary: #c9d1d9; 
+            --success-green: #3fb950;  /* Hijau neon untuk status 'OPTIMAL' */
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* HEADER SECTION */
+        header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 40px; 
+            background: var(--panel-bg); 
+            border-bottom: 3px solid var(--accent-blue);
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.6);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-kiw-box {
+            border-left: 2px solid #444;
+            padding-left: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-kiw-box img {
+            height: 45px;
+            background: white;
+            padding: 4px;
+            border-radius: 4px;
+            display: block;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .header-title {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        #clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+            min-width: 150px;
+            text-align: right;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+        }
+
+        /* MAIN DASHBOARD */
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        h3 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+            margin: 5px 0;
+            line-height: 1;
+        }
+
+        .unit-desc {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* WATER FLOW ANIMATION */
+        .process-visual {
+            text-align: center;
+            background: #0d1117;
+        }
+
+        .pipe {
+            width: 90%;
+            height: 20px;
+            background: #21262d;
+            border-radius: 10px;
+            margin: 15px auto;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+
+        .water-flow {
+            position: absolute;
+            height: 100%;
+            width: 200%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--accent-blue) 50%, 
+                transparent 100%);
+            animation: flow 1.5s linear infinite;
+        }
+
+        @keyframes flow {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0%); }
+        }
+
+        .dashed-line {
+            height: 50px;
+            border-left: 3px dashed #30363d;
+            margin: 5px auto;
+            width: 0;
+        }
+
+        /* FOOTER MARQUEE */
+        footer {
+            background: var(--kiw-purple);
+            color: white;
+            padding: 10px 0;
+            overflow: hidden;
+            border-top: 2px solid var(--kiw-purple-light);
+        }
+
+        .marquee {
+            white-space: nowrap;
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: #21262d;
+            height: 14px;
+            border-radius: 7px;
+            margin-top: 15px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 15px var(--accent-blue);
+            transition: width 1s ease-in-out;
+        }
+
+        /* Status Blink */
+        .blink {
+            animation: blinker 1.5s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0.2; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div style="color: white; font-size: 1.8rem; font-weight: bold; letter-spacing: -1px;">invila™</div>
+            
+            <div class="logo-kiw-box">
+                <span style="display: block; font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 3px; font-weight: bold;">MEMBER OF</span>
+                <img src="logo-kiw.png" alt="Logo PT KIW">
+            </div>
+        </div>
+
+        <div class="header-title">
+            <h1>Integrated SPAM Control</h1>
+            <p>KAWASAN INDUSTRI WIJAYAKUSUMA (KIW) SEMARANG</p>
+        </div>
+
+        <div id="clock">00:00:00</div>
+    </header>
+
+    <main>
+        <div class="card">
+            <h3>Total Produksi Hari Ini</h3>
+            <div class="stat-value" id="prod-value">1,254</div>
+            <p class="unit-desc">METER KUBIK (m³)</p>
+            <hr style="border: 0.5px solid #444; margin: 25px 0;">
+            <h3>Status Sistem</h3>
+            <div style="color: var(--success-green); font-weight: bold; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                <span class="blink">●</span> RUNNING OPTIMAL
+            </div>
+        </div>
+
+        <div class="card process-visual">
+            <h2 style="color: var(--accent-blue); font-size: 1.1rem; margin-top: 0; letter-spacing: 1px;">SMART WATER MONITORING</h2>
+            
+            <div style="margin: 20px 0;">
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">INTAKE RIVER WATER</p>
+                <div class="pipe"><div class="water-flow"></div></div>
+                
+                <div class="dashed-line"></div>
+                
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">INVILA™ HYBRID TREATMENT</p>
+                <div class="pipe"><div class="water-flow"></div></div>
+            </div>
+            
+            <p style="font-style: italic; color: #58a6ff; font-size: 0.75rem; opacity: 0.8;">
+                Real-time Data: PLC Siemens S7-1200
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Kualitas Air (TDS)</h3>
+            <div class="stat-value">185</div>
+            <p class="unit-desc">PPM (STANDAR INDUSTRI)</p>
+            <hr style="border: 0.5px solid #444; margin: 25px 0;">
+            <h3>Sisa Kapasitas Reservoir</h3>
+            <div class="stat-value">82%</div>
+            <div class="progress-container">
+                <div class="progress-fill" style="width: 82%;"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="marquee">
+            INFO: Seluruh air bersih diproduksi oleh <strong>Invila™</strong> dengan Smart Infrastructure Zero CAPEX. | Keandalan sistem: 100% | Kualitas air memenuhi Baku Mutu Nasional (Permenkes). &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </footer>
+
+    <script>
+        // Jam Real-time
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID', options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Simulasi Angka Produksi (Bertambah otomatis)
+        let prod = 1254;
+        setInterval(() => {
+            prod += Math.floor(Math.random() * 2);
+            document.getElementById('prod-value').innerText = prod.toLocaleString('id-ID');
+        }, 5000);
+    </script>
+</body>
+</html>
